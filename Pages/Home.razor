@@ -1,0 +1,67 @@
+﻿@page "/"
+
+<PageTitle>Advent of code 2024</PageTitle>
+
+<h1>Days</h1>
+
+<div>
+    <select @onchange="SelectDay">
+        <option value="Select day" selected>---</option>
+        <option value="Day1">Day 1</option>
+        <option value="Day2">Day 2</option>
+        <option value="Day3">Day 3</option>
+        <option value="Day4">Day 4</option>
+        <option value="Day5">Day 5</option>
+    </select>
+</div>
+
+<div>
+    <select @onchange="SelectStep">
+        <option value="Select day" selected>---</option>
+        <option value="Step1">1</option>
+        <option value="Step2">2</option>
+    </select>
+</div>
+
+<div>
+    <textarea @bind="input" rows="21">
+</textarea>
+</div>
+
+<div>
+    <button class="btn btn-primary" @onclick="ExecuteDay">Click me</button>
+</div>
+
+<input @bind="output" />
+
+@code {
+
+    private string day;
+    private string step;
+    private string input;
+    private string output;
+    private void ExecuteDay(MouseEventArgs e)
+    {
+        var type = Type.GetType(day);
+        if (type != null)
+        {
+            var dayInstance = Activator.CreateInstance(type) as IDay;
+            if (step == "Step1")
+            {
+                output = dayInstance.Step1(input);
+            }
+            if (step == "Step2")
+            {
+                output = dayInstance.Step2(input);
+            }
+        }
+    }
+    private void SelectDay(ChangeEventArgs e)
+    {
+        day = e.Value.ToString();
+    }
+    private void SelectStep(ChangeEventArgs e)
+    {
+        step = e.Value.ToString();
+    }
+}
